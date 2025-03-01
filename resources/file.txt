@@ -1,0 +1,33 @@
+The < symbol takes a file’s content and sends it as input to a command.
+Instead of typing input manually, the command reads from the file.
+
+
+The | takes the output of one command and sends it as input to another command.
+This lets us combine multiple commands without using files.
+
+The > symbol redirects the command output to a file instead of printing it on the screen.
+If the file already exists, it is cleared before writing.
+
+
+The >> symbol appends output to the end of a file instead of replacing it.
+
+
+The << LIMITER allows you to type input manually until you enter LIMITER.
+Useful for interactive input.
+
+
+fork → Creates a new child process by duplicating the parent process.
+
+dup2 → Redirects file descriptors, often used for input/output redirection.
+
+execve →  executes a program by Replacing the current process with a new program.
+
+pipe → Creates a unidirectional communication channel between processes.
+
+wait → Makes a parent process wait for a child process to finish.
+
+waitpid → Waits for a specific child process to terminate and retrieves its exit status.
+
+access → Checks if a file exists and if the user has the required permissions.
+
+unlink → Deletes a file from the filesystem
