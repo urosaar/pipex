@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/23 17:42:21 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/02 04:02:48 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,21 @@ static void	handle_child_process(char *limiter, int pipefd[])
 	close(pipefd[0]);
 	limiter_nl = ft_strjoin(limiter, "\n");
 	line = NULL;
-	while (getline(&line, &(size_t){0}, stdin) != -1)
+	while (1)
 	{
-		if (ft_strcmp(line, limiter_nl) == 0)
+		printf("Waiting for input...\n"); // Debug
+		line = get_next_line(STDIN_FILENO);
+		if (!line) // Handle EOF (Ctrl+D) explicitly
 			break ;
+		printf("Read: %s", line); // Debug
+		if (ft_strcmp(line, limiter_nl) == 0)
+		{
+			free(line);
+			break ;
+		}
 		write(pipefd[1], line, ft_strlen(line));
+		free(line);
 	}
-	free(line);
 	free(limiter_nl);
 	close(pipefd[1]);
 	exit(0);

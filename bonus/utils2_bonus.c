@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:47:13 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/25 18:26:30 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/02 02:47:10 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,8 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
+void	create_pipe(int pipefd[2])
+{
+	if (pipe(pipefd) == -1)
+		error_exit("pipe", EXIT_FAILURE);
+}

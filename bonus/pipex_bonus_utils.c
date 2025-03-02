@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:05:21 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/25 18:57:27 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/02 02:46:40 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,41 @@ static char	*search_in_dirs(char **dirs, char *cmd)
 	ft_free_split(dirs);
 	return (NULL);
 }
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
 
-char	*get_cmd_path(char *cmd)
+	i = 0;
+	while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
+}
+
+char *ft_getenv(char **env, char *name)
+{
+	int i = 0;
+	size_t len = 0;
+
+	if (name == NULL || env == NULL)
+		return (NULL);
+	while (name[len] != '\0')
+		len++;
+	if (len > 0 && name[len - 1] == '=')
+		len--;
+	while (env[i] != NULL)
+	{
+		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+			return (env[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*get_cmd_path(char *cmd , char **env)
 {
 	char	*path;
 	char	**dirs;
@@ -48,7 +81,7 @@ char	*get_cmd_path(char *cmd)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	path = getenv("PATH");
+	path = ft_getenv(env,"PATH=");
 	if (!path)
 		return (NULL);
 	dirs = ft_split(path, ':');
@@ -63,7 +96,7 @@ void	execute_cmd(char *cmd, char **env)
 	args = ft_split(cmd, ' ');
 	if (!args || !args[0])
 		(ft_free_split(args), handle_errors(cmd));
-	path = get_cmd_path(args[0]);
+	path = get_cmd_path(args[0],env);
 	if (!path)
 		handle_errors(args[0]);
 	if (execve(path, args, env) == -1)
@@ -74,10 +107,4 @@ void	execute_cmd(char *cmd, char **env)
 		ft_free_split(args);
 		exit(126);
 	}
-}
-
-void	create_pipe(int pipefd[2])
-{
-	if (pipe(pipefd) == -1)
-		error_exit("pipe", EXIT_FAILURE);
 }
