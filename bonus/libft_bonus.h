@@ -6,14 +6,14 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:08:18 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/23 17:41:32 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:18:16 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_BONUS_H
 # define LIBFT_BONUS_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1024
 # endif
 # include <stddef.h>
 # include <stdlib.h>

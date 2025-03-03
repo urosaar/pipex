@@ -6,38 +6,30 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/02 04:02:48 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:18:07 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	handle_child_process(char *limiter, int pipefd[])
+static void     handle_child_process(char *limiter, int pipefd[])
 {
-	char	*line;
-	char	*limiter_nl;
+        char    *line;
+        char    *limiter_nl;
 
-	close(pipefd[0]);
-	limiter_nl = ft_strjoin(limiter, "\n");
-	line = NULL;
-	while (1)
-	{
-		printf("Waiting for input...\n"); // Debug
-		line = get_next_line(STDIN_FILENO);
-		if (!line) // Handle EOF (Ctrl+D) explicitly
-			break ;
-		printf("Read: %s", line); // Debug
-		if (ft_strcmp(line, limiter_nl) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(pipefd[1], line, ft_strlen(line));
-		free(line);
-	}
-	free(limiter_nl);
-	close(pipefd[1]);
-	exit(0);
+        close(pipefd[0]);
+        limiter_nl = ft_strjoin(limiter, "\n");
+        line = NULL;
+        while (getline(&line, &(size_t){0}, stdin) != -1)
+        {
+                if (ft_strcmp(line, limiter_nl) == 0)
+                        break ;
+                write(pipefd[1], line, ft_strlen(line));
+        }
+        free(line);
+        free(limiter_nl);
+        close(pipefd[1]);
+        exit(0);
 }
 
 static void	handle_here_doc(char *limiter, int *in_fd)
