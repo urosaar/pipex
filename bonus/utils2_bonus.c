@@ -6,22 +6,12 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:47:13 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/02 02:47:10 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:49:02 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include "libft_bonus.h"
-
-void	validate_arguments(int argc, char **argv)
-{
-	if (argc < 2)
-		error_exit("Invalid number of arguments", 1);
-	if (ft_strcmp(argv[1], "here_doc") == 0 && argc < 6)
-		error_exit("here_doc requires at least 6 arguments", 1);
-	else if (argc < 5)
-		error_exit("Invalid number of arguments", 1);
-}
 
 int	ft_strcmp(char *s1, char *s2)
 {

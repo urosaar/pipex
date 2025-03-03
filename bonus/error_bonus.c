@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   error_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:23:48 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/25 18:28:02 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:03:22 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ void	handle_errors(char *cmd)
 	write(2,"\n",1);
 	exit(127);
 }
+void	validate_arguments(int argc, char **argv)
+{
+	if (argc < 2)
+		error_exit("Invalid number of arguments", 1);
+	if (ft_strcmp(argv[1], "here_doc") == 0 && argc < 6)
+		error_exit("here_doc requires at least 6 arguments", 1);
+	else if (argc < 5)
+		error_exit("Invalid number of arguments", 1);
+}
+
 void	ft_free_split(char **arr)
 {
 	int	i;

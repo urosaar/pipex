@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:01:37 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/03 14:18:20 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:39:52 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*read_buffer(int fd, char *buf, char *backup)
 	char		*char_temp;
 
 	read_line = 1;
-	while (!(ft_strchr (backup, '\n')) && read_line != '\0')
+	while (((backup == NULL) || !ft_strchr(backup, '\n')) && read_line > 0)
 	{
 		read_line = read(fd, buf, BUFFER_SIZE);
 		if (read_line == -1)
@@ -44,7 +44,7 @@ static char	*get_rest(char *line)
 	count = 0;
 	while (line[count] != '\n' && line[count] != '\0')
 		count++;
-	if (line[count] == '\0' || line[1] == '\0')
+	if (line[count] == '\0' || line[count + 1] == '\0')
 		return (NULL);
 	backup = ft_substr(line, count + 1, ft_strlen(line) - count);
 	if (*backup == '\0')

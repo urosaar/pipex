@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:05:21 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/02 02:46:40 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:39:31 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 char *ft_getenv(char **env, char *name)
 {
-	int i = 0;
-	size_t len = 0;
+	int		i;
+	size_t	len;
 
+	i = 0;
+	len = 0;
 	if (name == NULL || env == NULL)
 		return (NULL);
 	while (name[len] != '\0')
