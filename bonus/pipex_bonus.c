@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/03 16:07:38 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/04 04:44:19 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static void handle_child_process(char *limiter, int pipefd[])
 
 	close(pipefd[0]);
 	limiter_nl = ft_strjoin(limiter, "\n");
-
-	while ((line = get_next_line(STDIN_FILENO)) != NULL)
+	line = get_next_line(STDIN_FILENO);
+	while (line != NULL)
 	{
 		if (ft_strcmp(line, limiter_nl) == 0)
 		{
@@ -29,6 +29,7 @@ static void handle_child_process(char *limiter, int pipefd[])
 		}
 		write(pipefd[1], line, ft_strlen(line));
 		free(line);
+		line = get_next_line(STDIN_FILENO);
 	}
 	free(limiter_nl);
 	close(pipefd[1]);
@@ -65,6 +66,7 @@ static void	exec_cmd(int input, int output, char *cmd, char **envp)
 		close(output);
 		execute_cmd(cmd, envp);
 	}
+	close(input);
 	close(output);
 }
 
@@ -81,11 +83,15 @@ static void	process_commands(int cmds, char **cmd, int io[], char **envp)
 		if (i < cmds - 1)
 			create_pipe(next_pipe);
 		if (i == cmds - 1)
+		{
 			exec_cmd(prev_pipe, io[1], cmd[i], envp);
+			close(prev_pipe);		
+		}
 		else
 		{
 			exec_cmd(prev_pipe, next_pipe[1], cmd[i], envp);
 			close(next_pipe[1]);
+			close(prev_pipe);
 			prev_pipe = next_pipe[0];
 		}
 	}
@@ -105,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		handle_here_doc(argv[2], &io[0]);
 		cmd_count = argc - 4;
 		cmds = &argv[3];
-		io[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		io[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	else
 	{
