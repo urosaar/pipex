@@ -6,12 +6,12 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/08 03:05:34 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/08 05:35:04 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
- 
+
 static void	execute_child(int input_fd, int pipefd[2], char *cmd, char **envp)
 {
 	pid_t	pid;
@@ -31,7 +31,8 @@ static void	execute_child(int input_fd, int pipefd[2], char *cmd, char **envp)
 	}
 }
 
-static void	handle_middle_commands(int *input_fd, char **cmds, int count, char **envp)
+static void	handle_middle_commands(int *input_fd, char **cmds,
+			int count, char **envp)
 {
 	int		pipefd[2];
 	int		i;
@@ -50,7 +51,8 @@ static void	handle_middle_commands(int *input_fd, char **cmds, int count, char *
 	}
 }
 
-static void	handle_last_command(int input_fd, int output_fd, char *cmd, char **envp)
+static void	handle_last_command(int input_fd, int output_fd,
+	char *cmd, char **envp)
 {
 	pid_t	pid;
 
@@ -69,8 +71,13 @@ static void	handle_last_command(int input_fd, int output_fd, char *cmd, char **e
 	}
 }
 
-static void	process_pipeline(int input_fd, int output_fd, char **cmds, int count, char **envp)
+static void	process_pipeline(int fds[2], char **cmds, int count, char **envp)
 {
+	int	input_fd;
+	int	output_fd;
+
+	input_fd = fds[0];
+	output_fd = fds[1];
 	handle_middle_commands(&input_fd, cmds, count, envp);
 	handle_last_command(input_fd, output_fd, cmds[count - 1], envp);
 	if (input_fd != STDIN_FILENO)
@@ -87,6 +94,7 @@ int	main(int argc, char **argv, char **envp)
 	int		output_fd;
 	char	**cmds;
 	int		cmd_count;
+	int		fds[2];
 
 	validate_arguments(argc, argv);
 	if (ft_strcmp(argv[1], "here_doc") == 0)
@@ -105,6 +113,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (input_fd == -1 || output_fd == -1)
 		error_exit("file error", EXIT_FAILURE);
-	process_pipeline(input_fd, output_fd, cmds, cmd_count, envp);
-	return (0);
+	return (fds[0] = input_fd, fds[1] = output_fd,
+		process_pipeline(fds, cmds, cmd_count, envp), 0);
 }
