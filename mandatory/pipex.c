@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:06:56 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/02/25 17:49:14 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/06 01:02:29 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,20 @@ static pid_t	launch_second_child(char *outfile_name, int pipefd[2],
 	}
 	return (pid);
 }
-void s()
-{
-	system("leaks pipex");
-}
+
 int	main(int argc, char **argv, char **envp)
 {
 	int		pipefd[2];
 	pid_t	pid1;
 	pid_t	pid2;
-	// atexit(s);
+
 	validate_arguments(argc);
 	create_pipe(pipefd);
 	pid1 = launch_first_child(argv[1], pipefd, argv[2], envp);
 	pid2 = launch_second_child(argv[4], pipefd, argv[3], envp);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	waitpid(pid1, NULL, 0); // 9ra 3lihoum
+	waitpid(pid1, NULL, 0); 
 	waitpid(pid2, NULL, 0);
 	return (0);
 }
