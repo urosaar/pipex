@@ -20,7 +20,7 @@ SRCS_BONUS = bonus/ft_split_bonus.c \
 			 bonus/pipex_bonus.c \
 			 bonus/pipex_bonus_utils.c \
 			 bonus/utils_bonus.c \
-			 bonus/utils2_bonus.c \
+			 bonus/here_doc_bonus.c \
 			 bonus/error_bonus.c
 
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
