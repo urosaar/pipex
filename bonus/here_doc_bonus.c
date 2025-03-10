@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   here_doc_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:47:13 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/08 01:33:36 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 22:06:09 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ void	handle_here_doc(char *limiter, int *in_fd)
 	limiter_with_nl = ft_strjoin(limiter, "\n");
 	if (!limiter_with_nl || pipe(pipefd) < 0)
 		error_exit("here_doc setup", EXIT_FAILURE);
+	//free(lim..)
+	// close needed pipe
 	pid = fork();
-	if (pid < 0)
-		error_exit("fork", EXIT_FAILURE);
+	// if (pid < 0)
+	// 	error_exit("fork", EXIT_FAILURE); ??
 	if (pid == 0)
 		heredoc_child(pipefd, limiter_with_nl);
 	else
@@ -58,7 +60,7 @@ void	handle_here_doc(char *limiter, int *in_fd)
 		free(limiter_with_nl);
 		close(pipefd[1]);
 		*in_fd = pipefd[0];
-		waitpid(pid, NULL, 0);
+		waitpid(pid, NULL, 0); // ??
 	}
 }
 int	ft_strcmp(char *s1, char *s2)
@@ -75,4 +77,12 @@ void	create_pipe(int pipefd[2])
 {
 	if (pipe(pipefd) == -1)
 		error_exit("pipe", EXIT_FAILURE);
+}
+void	exit_close(int fd, int fd2)
+{
+	if (fd != -1)
+		close(fd);
+	if (fd2 != -1)
+		close(fd2);
+	error_exit("file error", EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:03:22 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/08 01:33:52 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:51:55 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	validate_arguments(int argc, char **argv);
 char	*get_next_line(int fd);
 void	handle_errors(char *cmd);
 void	handle_here_doc(char *limiter, int *in_fd);
+void	exit_close(int fd, int fd2);
 
 #endif

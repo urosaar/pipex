@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/08 05:35:04 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 22:48:49 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	main(int argc, char **argv, char **envp)
 		output_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}
 	if (input_fd == -1 || output_fd == -1)
-		error_exit("file error", EXIT_FAILURE);
+		exit_close(input_fd, output_fd);
 	return (fds[0] = input_fd, fds[1] = output_fd,
 		process_pipeline(fds, cmds, cmd_count, envp), 0);
 }

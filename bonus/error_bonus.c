@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:23:48 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/04 00:30:47 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 22:03:55 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	handle_errors(char *cmd)
 {
 	if (!cmd || !*cmd)
 	{
-		ft_putstr_fd("pipex: permission denied: \n", 2);
+		ft_putstr_fd("pipex: command not found\n", 2);
 		exit(126);
 	}
 	if (ft_strchr(cmd, '/') && access(cmd, F_OK) == 0)
