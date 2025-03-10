@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:06:56 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/06 01:02:29 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 23:12:58 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ static	pid_t	launch_first_child(char *infile_name, int pipefd[2],
 
 	pid = fork();
 	if (pid < 0)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
 		error_exit("fork", EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
 		close(pipefd[0]);
@@ -59,7 +63,11 @@ static pid_t	launch_second_child(char *outfile_name, int pipefd[2],
 
 	pid = fork();
 	if (pid < 0)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
 		error_exit("fork", EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
 		close(pipefd[1]);

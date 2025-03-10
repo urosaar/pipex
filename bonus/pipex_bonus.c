@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:12:14 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/10 22:48:49 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 23:32:13 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@ static void	execute_child(int input_fd, int pipefd[2], char *cmd, char **envp)
 
 	pid = fork();
 	if (pid < 0)
+	{
+		if (input_fd != STDIN_FILENO)
+        	close(input_fd);
+		close(pipefd[0]);
+		close(pipefd[1]);
 		error_exit("fork", EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
 		dup2(input_fd, STDIN_FILENO);
@@ -41,7 +47,11 @@ static void	handle_middle_commands(int *input_fd, char **cmds,
 	while (i < count - 1)
 	{
 		if (pipe(pipefd) < 0)
+		{
+			if (*input_fd != STDIN_FILENO)
+                close(*input_fd);
 			error_exit("pipe", EXIT_FAILURE);
+		}
 		execute_child(*input_fd, pipefd, cmds[i], envp);
 		close(pipefd[1]);
 		if (*input_fd != STDIN_FILENO)
@@ -58,7 +68,13 @@ static void	handle_last_command(int input_fd, int output_fd,
 
 	pid = fork();
 	if (pid < 0)
+	{
+		if (input_fd != STDIN_FILENO)
+			close(input_fd);
+		if (output_fd != STDOUT_FILENO)
+		close(output_fd);
 		error_exit("fork", EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
 		dup2(input_fd, STDIN_FILENO);

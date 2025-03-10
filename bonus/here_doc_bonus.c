@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:47:13 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/10 22:06:09 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/10 23:40:46 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ void	handle_here_doc(char *limiter, int *in_fd)
 	char	*limiter_with_nl;
 
 	limiter_with_nl = ft_strjoin(limiter, "\n");
-	if (!limiter_with_nl || pipe(pipefd) < 0)
-		error_exit("here_doc setup", EXIT_FAILURE);
-	//free(lim..)
-	// close needed pipe
+	 if (!limiter_with_nl)
+        error_exit("here_doc", EXIT_FAILURE);
+    if (pipe(pipefd) < 0) 
+	{
+        free(limiter_with_nl);
+        error_exit("here_doc", EXIT_FAILURE);
+    }
 	pid = fork();
-	// if (pid < 0)
-	// 	error_exit("fork", EXIT_FAILURE); ??
 	if (pid == 0)
 		heredoc_child(pipefd, limiter_with_nl);
 	else
@@ -60,7 +61,7 @@ void	handle_here_doc(char *limiter, int *in_fd)
 		free(limiter_with_nl);
 		close(pipefd[1]);
 		*in_fd = pipefd[0];
-		waitpid(pid, NULL, 0); // ??
+		waitpid(pid, NULL, 0);
 	}
 }
 int	ft_strcmp(char *s1, char *s2)
