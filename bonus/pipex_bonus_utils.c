@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:05:21 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/05 23:00:06 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:29:53 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static char	*search_in_dirs(char **dirs, char *cmd)
 	ft_free_split(dirs);
 	return (NULL);
 }
+
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
@@ -48,7 +49,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-char *ft_getenv(char **env, char *name)
+char	*ft_getenv(char **env, char *name)
 {
 	int		i;
 	size_t	len;
@@ -70,7 +71,7 @@ char *ft_getenv(char **env, char *name)
 	return (NULL);
 }
 
-char	*get_cmd_path(char *cmd , char **env)
+char	*get_cmd_path(char *cmd, char **env)
 {
 	char	*path;
 	char	**dirs;
@@ -83,10 +84,12 @@ char	*get_cmd_path(char *cmd , char **env)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	path = ft_getenv(env,"PATH=");
+	path = ft_getenv(env, "PATH=");
 	if (!path)
 		return (NULL);
 	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);
 	return (search_in_dirs(dirs, cmd));
 }
 
@@ -96,11 +99,17 @@ void	execute_cmd(char *cmd, char **env)
 	char	*path;
 
 	args = ft_split(cmd, ' ');
+	if (args[0][0] == '.' && args[0][1] == '/')
+		(ft_free_split(args), exit(0));
 	if (!args || !args[0])
-		(ft_free_split(args), handle_errors(cmd));
-	path = get_cmd_path(args[0],env);
+	{
+		if (args)
+			ft_free_split(args);
+		handle_errors("", NULL);
+	}
+	path = get_cmd_path(args[0], env);
 	if (!path)
-		handle_errors(args[0]);
+		handle_errors(args[0], args);
 	if (execve(path, args, env) == -1)
 	{
 		ft_putstr_fd("pipex: ", 2);

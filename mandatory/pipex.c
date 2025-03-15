@@ -6,7 +6,7 @@
 /*   By: oukhanfa <oukhanfa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:06:56 by oukhanfa          #+#    #+#             */
-/*   Updated: 2025/03/10 23:12:58 by oukhanfa         ###   ########.fr       */
+/*   Updated: 2025/03/11 01:12:15 by oukhanfa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	validate_arguments(int argc)
 {
 	if (argc != 5)
 	{
-		ft_putstr_fd("pipex: Invalid number of arguments\n",2);
+		ft_putstr_fd("pipex: Invalid number of arguments\n", 2);
 		exit(1);
 	}
 }
@@ -95,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 	pid2 = launch_second_child(argv[4], pipefd, argv[3], envp);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	waitpid(pid1, NULL, 0); 
+	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
 	return (0);
 }

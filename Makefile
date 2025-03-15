@@ -2,7 +2,7 @@ NAME = pipex
 
 NAME_BONUS = pipex_bonus
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -rf
@@ -27,10 +27,10 @@ OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) mandatory/pipex.h mandatory/libft.h
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.c
+%.o: %.c mandatory/pipex.h mandatory/libft.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
